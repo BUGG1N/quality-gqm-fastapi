@@ -1,0 +1,92 @@
+[
+  {
+    "file": "fastapi/dependencies/utils.py",
+    "commits": 52,
+    "total_changes": 1370,
+    "avg_cc": 7.482758620689655,
+    "max_cc": 44,
+    "mi_score": 5.29,
+    "hotspot_score": 114236.62082002476
+  },
+  {
+    "file": "fastapi/routing.py",
+    "commits": 38,
+    "total_changes": 1000,
+    "avg_cc": 4.181818181818182,
+    "max_cc": 28,
+    "mi_score": 19.9,
+    "hotspot_score": 9894.929191411604
+  },
+  {
+    "file": "fastapi/applications.py",
+    "commits": 45,
+    "total_changes": 1170,
+    "avg_cc": 2.0869565217391304,
+    "max_cc": 10,
+    "mi_score": 41.07,
+    "hotspot_score": 3957.347476736431
+  },
+  {
+    "file": "fastapi/encoders.py",
+    "commits": 22,
+    "total_changes": 460,
+    "avg_cc": 10.5,
+    "max_cc": 37,
+    "mi_score": 49.23,
+    "hotspot_score": 2364.0056875888686
+  },
+  {
+    "file": "fastapi/params.py",
+    "commits": 28,
+    "total_changes": 660,
+    "avg_cc": 2.9166666666666665,
+    "max_cc": 11,
+    "mi_score": 42.37,
+    "hotspot_score": 1708.284163323106
+  },
+  {
+    "file": "fastapi/exceptions.py",
+    "commits": 18,
+    "total_changes": 375,
+    "avg_cc": 1.5,
+    "max_cc": 3,
+    "mi_score": 88.46,
+    "hotspot_score": 190.76418720325572
+  },
+  {
+    "file": "fastapi/concurrency.py",
+    "commits": 12,
+    "total_changes": 245,
+    "avg_cc": 4.0,
+    "max_cc": 4,
+    "mi_score": 96.2,
+    "hotspot_score": 152.8066528066528
+  },
+  {
+    "file": "fastapi/datastructures.py",
+    "commits": 15,
+    "total_changes": 305,
+    "avg_cc": 1.3125,
+    "max_cc": 2,
+    "mi_score": 75.21,
+    "hotspot_score": 140.6686278420423
+  },
+  {
+    "file": "fastapi/security/__init__.py",
+    "commits": 25,
+    "total_changes": 520,
+    "avg_cc": 0,
+    "max_cc": 0,
+    "mi_score": 100.0,
+    "hotspot_score": 130.0
+  },
+  {
+    "file": "fastapi/middleware/cors.py",
+    "commits": 20,
+    "total_changes": 400,
+    "avg_cc": 0,
+    "max_cc": 0,
+    "mi_score": 100.0,
+    "hotspot_score": 80.0
+  }
+]
