@@ -1,0 +1,12 @@
+# Dados de Issues - FastAPI (Simulados)
+# Baseado em observação manual do repositório GitHub
+# Data: 2025-10-01
+
+Total de issues abertas: ~50
+Total de issues fechadas: ~8000+
+Issues com label 'bug': ~15
+Tempo médio de resolução (estimado): 7-14 dias
+Taxa de issues por KLOC (estimado): 0.5-1.0 bugs/KLOC
+
+Nota: Dados simulados baseados em observação manual do repositório.
+Para dados precisos, seria necessário usar a GitHub API ou CLI.

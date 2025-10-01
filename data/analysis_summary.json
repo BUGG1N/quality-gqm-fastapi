@@ -1,0 +1,27 @@
+{
+  "timestamp": "2025-10-01T16:19:01.326099",
+  "complexity_stats": {
+    "total_methods": 0,
+    "avg_complexity": 0,
+    "max_complexity": 0
+  },
+  "maintainability_stats": {
+    "total_files": 45,
+    "avg_maintainability": 81.55822222222223,
+    "min_maintainability": 5.29
+  },
+  "sloc_stats": {
+    "total_files": 46,
+    "total_sloc": 14695,
+    "avg_sloc_per_file": 319.45652173913044
+  },
+  "churn_stats": {
+    "files_with_changes": 0,
+    "total_changes": 0
+  },
+  "hotspots": {
+    "total_files_with_issues": 10,
+    "critical_hotspots": 0,
+    "critical_files": []
+  }
+}

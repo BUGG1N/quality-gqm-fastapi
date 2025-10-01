@@ -1,0 +1,94 @@
+21	Python	fastapi	fastapi/__init__.py
+
+2	Python	fastapi	fastapi/__main__.py
+
+508	Python	fastapi	fastapi/_compat.py
+
+4043	Python	fastapi	fastapi/applications.py
+
+19	Python	fastapi	fastapi/background.py
+
+10	Python	fastapi	fastapi/cli.py
+
+25	Python	fastapi	fastapi/concurrency.py
+
+103	Python	fastapi	fastapi/datastructures.py
+
+0	__empty__	fastapi	fastapi/dependencies\__init__.py
+
+31	Python	fastapi	fastapi/dependencies\models.py
+
+801	Python	fastapi	fastapi/dependencies\utils.py
+
+273	Python	fastapi	fastapi/encoders.py
+
+25	Python	fastapi	fastapi/exception_handlers.py
+
+78	Python	fastapi	fastapi/exceptions.py
+
+2	Python	fastapi	fastapi/logger.py
+
+1	Python	fastapi	fastapi/middleware\__init__.py
+
+12	Python	fastapi	fastapi/middleware\asyncexitstack.py
+
+1	Python	fastapi	fastapi/middleware\cors.py
+
+1	Python	fastapi	fastapi/middleware\gzip.py
+
+2	Python	fastapi	fastapi/middleware\httpsredirect.py
+
+2	Python	fastapi	fastapi/middleware\trustedhost.py
+
+1	Python	fastapi	fastapi/middleware\wsgi.py
+
+0	__duplicate__	fastapi	fastapi/openapi\__init__.py
+
+3	Python	fastapi	fastapi/openapi\constants.py
+
+226	Python	fastapi	fastapi/openapi\docs.py
+
+318	Python	fastapi	fastapi/openapi\models.py
+
+485	Python	fastapi	fastapi/openapi\utils.py
+
+2000	Python	fastapi	fastapi/param_functions.py
+
+689	Python	fastapi	fastapi/params.py
+
+0	__duplicate__	fastapi	fastapi/py.typed
+
+2	Python	fastapi	fastapi/requests.py
+
+25	Python	fastapi	fastapi/responses.py
+
+3846	Python	fastapi	fastapi/routing.py
+
+15	Python	fastapi	fastapi/security\__init__.py
+
+166	Python	fastapi	fastapi/security\api_key.py
+
+4	Python	fastapi	fastapi/security\base.py
+
+258	Python	fastapi	fastapi/security\http.py
+
+432	Python	fastapi	fastapi/security\oauth2.py
+
+67	Python	fastapi	fastapi/security\open_id_connect_url.py
+
+8	Python	fastapi	fastapi/security\utils.py
+
+1	Python	fastapi	fastapi/staticfiles.py
+
+1	Python	fastapi	fastapi/templating.py
+
+1	Python	fastapi	fastapi/testclient.py
+
+8	Python	fastapi	fastapi/types.py
+
+176	Python	fastapi	fastapi/utils.py
+
+3	Python	fastapi	fastapi/websockets.py
+
+
+

@@ -1,0 +1,10 @@
+Versão do repositório FastAPI analisada:
+===========================================
+
+Hash do commit: 45bfb89ea25fcbe8c44ac5d5657b147cfa074649
+Tag/Versão: 0.118.0-26-g45bfb89ea
+Data da análise: 2025-10-01
+Repositório: https://github.com/tiangolo/fastapi
+
+Este arquivo documenta a versão exata do código-fonte analisada para garantir
+a reprodutibilidade dos resultados do estudo GQM (Goal-Question-Metric).
