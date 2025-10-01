@@ -85,7 +85,6 @@ setup.bat
 4. **Execute a análise**
    ```bash
    python scripts/collect_all_metrics.py
-   python scripts/analyze_metrics.py
    ```
 
 ## 📈 Metodologia
@@ -135,9 +134,13 @@ Este estudo segue a abordagem **Goal-Question-Metric (GQM)** proposta por Basili
 
 ## 📚 Documentação
 
-- **[Relatório Completo](docs/Relatorio_GQM_FastAPI.md)** - Análise GQM completa com 7 seções
-- **[Resumo Executivo](docs/Sumario_Executivo.md)** - Principais descobertas e recomendações
-- **[Lista de Verificação](docs/Checklist_Entrega.md)** - Validação e verificação de completude
+- **[📋 Relatório Principal](docs/Relatorio_Principal.md)** - Análise GQM completa com 7 seções (versão detalhada)
+- **[📄 Relatório Completo](docs/Relatorio_GQM_Completo.md)** - Versão concisa para PDF (≤5 páginas)
+- **[🔥 Análise de Hotspots](docs/Analise_Hotspots.md)** - Top 10 arquivos críticos identificados
+- **[📊 Tabela de Métricas](docs/Tabela_Metricas_Completa.md)** - Especificação completa (unidade/fonte/ferramenta)
+- **[🔍 Rastreabilidade](docs/Rastreabilidade_Completa.md)** - Documentação de reprodutibilidade
+- **[📝 Resumo Executivo](docs/Sumario_Executivo.md)** - Principais descobertas e recomendações
+- **[✅ Checklist de Entrega](docs/Checklist_Entrega.md)** - Validação de completude
 
 ## 🤝 Contribuições
 
@@ -189,26 +192,33 @@ This repository contains a comprehensive software quality analysis of the **Fast
 ## 🏗️ Repository Structure
 
 ```
-📁 fastapi-gqm-quality-analysis/
-├── 📄 README.md                    # This file
+📁 quality-gqm-fastapi/
+├── 📄 README.md                    # This file (bilingual PT-BR/EN)
 ├── 📄 LICENSE                      # MIT License
-├── 📁 docs/                        # 📚 Reports and documentation
-│   ├── Relatorio_GQM_FastAPI.md    # Complete GQM report (Portuguese)
+├── � setup.sh / setup.bat         # Automated setup scripts
+├── 📄 requirements.txt             # Python dependencies
+├── �📁 docs/                        # 📚 Complete documentation
+│   ├── Relatorio_Principal.md      # 🌟 Main GQM report (7 sections)
+│   ├── Relatorio_GQM_Completo.md   # PDF-ready version (≤5 pages)
+│   ├── Analise_Hotspots.md         # Critical hotspots analysis
+│   ├── Tabela_Metricas_Completa.md # Complete metrics specification
+│   ├── Rastreabilidade_Completa.md # Full traceability documentation
 │   ├── Sumario_Executivo.md        # Executive summary
-│   └── Checklist_Entrega.md        # Delivery checklist
-├── 📁 data/                        # 📊 Collected metrics data
-│   ├── version_info.txt            # Analyzed version details
-│   ├── analysis_summary.json       # Processed results
+│   └── Checklist_Entrega.md        # Delivery validation
+├── 📁 data/                        # 📊 Collected and processed data
+│   ├── analysis_summary.json       # Processed analysis results
+│   ├── hotspots_analysis.json      # Hotspot rankings and scores
 │   ├── mi.txt                      # Maintainability index (Radon)
-│   ├── sloc.txt                    # Source lines of code (Pygount)
-│   ├── cc.txt                      # Cyclomatic complexity
-│   ├── git_numstat.log             # Git churn data
-│   └── issues_summary.txt          # Bug density data
-├── 📁 scripts/                     # 🔧 Analysis and collection scripts
-│   ├── collect_all_metrics.py      # Automated metrics collection
-│   └── analyze_metrics.py          # Complete data analysis
-└── 📁 assets/                      # 🖼️ Images and visualizations
-    └── methodology_diagram.png     # GQM methodology diagram
+│   ├── cc.txt                      # Cyclomatic complexity (Radon)
+│   ├── sloc.json / sloc.txt         # Source lines of code (Pygount)
+│   ├── version_info.txt            # Analyzed version details
+│   └── issues_summary.txt          # Bug density analysis
+├── 📁 scripts/                     # 🤖 Analysis automation
+│   ├── collect_all_metrics.py      # 🌟 Complete automated collection
+│   ├── analyze_metrics.py          # Data processing and analysis
+│   └── analyze_hotspots.py         # Hotspot identification script
+└── 📁 Apostilas/                   # � Academic course materials
+    └── [Course PDFs from UFJF]
 ```
 
 ## 🚀 Quick Start
@@ -261,7 +271,6 @@ setup.bat
 4. **Run analysis**
    ```bash
    python scripts/collect_all_metrics.py
-   python scripts/analyze_metrics.py
    ```
 
 ## 📈 Methodology
@@ -321,9 +330,13 @@ This study follows the **Goal-Question-Metric (GQM)** approach proposed by Basil
 
 ## 📚 Documentation
 
-- **[Complete Report](docs/Relatorio_GQM_FastAPI.md)** - Full GQM analysis with 7 sections
-- **[Executive Summary](docs/Sumario_Executivo.md)** - Key findings and recommendations
-- **[Delivery Checklist](docs/Checklist_Entrega.md)** - Validation and completeness check
+- **[📋 Main Report](docs/Relatorio_Principal.md)** - Complete GQM analysis with 7 sections (detailed)
+- **[📄 Complete Report](docs/Relatorio_GQM_Completo.md)** - Concise PDF-ready version (≤5 pages)
+- **[🔥 Hotspots Analysis](docs/Analise_Hotspots.md)** - Top 10 critical files identified
+- **[📊 Metrics Table](docs/Tabela_Metricas_Completa.md)** - Complete specification (unit/source/tool)
+- **[🔍 Traceability](docs/Rastreabilidade_Completa.md)** - Full reproducibility documentation
+- **[📝 Executive Summary](docs/Sumario_Executivo.md)** - Key findings and recommendations
+- **[✅ Delivery Checklist](docs/Checklist_Entrega.md)** - Completeness validation
 
 ## 🔄 Reproducibility
 

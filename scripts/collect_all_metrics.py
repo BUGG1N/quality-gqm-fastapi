@@ -1,269 +1,364 @@
 #!/usr/bin/env python3
 """
-Script principal para coleta automatizada de métricas do FastAPI
-Este script reproduz todas as análises do estudo GQM
+Script de Coleta Automatizada - FastAPI GQM Analysis
+Executa coleta completa de métricas de forma reproduzível
+
+Autor: Análise GQM FastAPI - UFJF
+Data: 2025-10-01
 """
 
 import os
-import subprocess
 import sys
+import subprocess
+import json
+import time
+from pathlib import Path
 from datetime import datetime
 
-def run_command(command, description, output_file=None):
-    """Executa um comando e captura a saída"""
-    print(f"[{datetime.now().strftime('%H:%M:%S')}] {description}")
+def print_banner():
+    """Exibe banner do script"""
+    print("🚀 FastAPI GQM Quality Analysis - Coleta Automatizada")
+    print("=" * 60)
+    print("📚 UFJF - Métricas de Software (1322004)")
+    print("👨‍🏫 Prof. Leonardo Vieira dos Santos Reis")
+    print("📅 Data:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    print("=" * 60)
+    print()
+
+def check_prerequisites():
+    """Verifica pré-requisitos do sistema"""
+    print("🔍 Verificando pré-requisitos...")
     
+    errors = []
+    
+    # Verificar Python
     try:
-        if output_file:
-            result = subprocess.run(command, shell=True, capture_output=True, text=True)
-            if result.returncode == 0:
-                with open(output_file, 'w', encoding='utf-8', errors='ignore') as f:
-                    f.write(result.stdout)
-        else:
-            result = subprocess.run(command, shell=True, capture_output=True, text=True)
-        
-        if result.returncode == 0:
-            print(f"  ✓ Sucesso - {description}")
-            return True
-        else:
-            print(f"  ✗ Erro - {description}: {result.stderr}")
-            return False
+        python_version = sys.version.split()[0]
+        print(f"✅ Python: {python_version}")
     except Exception as e:
-        print(f"  ✗ Exceção - {description}: {e}")
+        errors.append(f"Python: {e}")
+    
+    # Verificar ferramentas necessárias
+    tools = {
+        'git': ['git', '--version'],
+        'radon': ['radon', '--version'],
+        'pygount': ['pygount', '--version']
+    }
+    
+    for tool, cmd in tools.items():
+        try:
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=10)
+            if result.returncode == 0:
+                version = result.stdout.strip().split('\n')[0]
+                print(f"✅ {tool}: {version}")
+            else:
+                errors.append(f"{tool}: comando falhou")
+        except (subprocess.TimeoutExpired, FileNotFoundError):
+            errors.append(f"{tool}: não encontrado")
+        except Exception as e:
+            errors.append(f"{tool}: {e}")
+    
+    if errors:
+        print("\n❌ Erros encontrados:")
+        for error in errors:
+            print(f"  - {error}")
+        print("\n💡 Instale as dependências:")
+        print("  pip install radon pygount pandas matplotlib")
         return False
-
-def setup_environment():
-    """Configura o ambiente necessário"""
-    print("=== CONFIGURAÇÃO DO AMBIENTE ===")
     
-    # Verificar se estamos no diretório correto
-    if not os.path.exists('fastapi'):
-        print("ERRO: Execute este script no diretório raiz do projeto FastAPI clonado")
-        return False
-    
-    # Criar diretórios necessários
-    os.makedirs('data', exist_ok=True)
-    os.makedirs('img', exist_ok=True)
-    
-    # Registrar versão
-    git_hash = subprocess.run(['git', 'rev-parse', 'HEAD'], capture_output=True, text=True)
-    git_tag = subprocess.run(['git', 'describe', '--tags', '--always'], capture_output=True, text=True)
-    
-    version_info = f"""Versão do repositório FastAPI analisada:
-===========================================
-
-Hash do commit: {git_hash.stdout.strip()}
-Tag/Versão: {git_tag.stdout.strip()}
-Data da análise: {datetime.now().strftime('%Y-%m-%d')}
-Repositório: https://github.com/tiangolo/fastapi
-
-Este arquivo documenta a versão exata do código-fonte analisada para garantir
-a reprodutibilidade dos resultados do estudo GQM (Goal-Question-Metric).
-"""
-    
-    with open('data/version_info.txt', 'w', encoding='utf-8') as f:
-        f.write(version_info)
-    
-    print("  ✓ Ambiente configurado")
+    print("✅ Todos os pré-requisitos atendidos!\n")
     return True
 
-def collect_metrics():
-    """Coleta todas as métricas necessárias"""
-    print("\n=== COLETA DE MÉTRICAS ===")
+def setup_directories():
+    """Cria estrutura de diretórios necessária"""
+    print("📁 Configurando estrutura de diretórios...")
     
-    success_count = 0
-    total_count = 0
+    dirs = ['data', 'docs', 'scripts', 'img']
     
-    # 1. Complexidade Ciclomática
-    total_count += 1
-    if run_command("radon cc -s -a fastapi/", "Coletando complexidade ciclomática", "data/cc.txt"):
-        success_count += 1
+    for dir_name in dirs:
+        Path(dir_name).mkdir(exist_ok=True)
+        print(f"✅ {dir_name}/")
     
-    # 2. Índice de Manutenibilidade
-    total_count += 1
-    if run_command("radon mi -s fastapi/", "Coletando índice de manutenibilidade", "data/mi.txt"):
-        success_count += 1
-    
-    # 3. Linhas de código (SLOC)
-    total_count += 1
-    if run_command("pygount --format=sloccount fastapi/", "Coletando SLOC", "data/sloc.txt"):
-        success_count += 1
-    
-    # 4. Churn do Git (últimos 12 meses)
-    total_count += 1
-    churn_cmd = 'git log --since="12 months ago" --numstat --date=iso --pretty=format:"%H;%ad;%an;%s"'
-    if run_command(churn_cmd, "Coletando dados de churn", "data/git_numstat.log"):
-        success_count += 1
-    
-    # 5. Dados de issues (simulados - GitHub CLI não disponível)
-    total_count += 1
-    issues_data = """# Dados de Issues - FastAPI (Simulados)
-# Baseado em observação manual do repositório GitHub
-# Data: 2025-10-01
+    print()
 
-Total de issues abertas: ~50
-Total de issues fechadas: ~8000+
-Issues com label 'bug': ~15
-Tempo médio de resolução (estimado): 7-14 dias
-Taxa de issues por KLOC (estimado): 0.5-1.0 bugs/KLOC
-
-Nota: Dados simulados baseados em observação manual do repositório.
-Para dados precisos, seria necessário usar a GitHub API ou CLI.
-"""
+def check_fastapi_repo():
+    """Verifica se repositório FastAPI está disponível"""
+    print("🔍 Verificando repositório FastAPI...")
+    
+    fastapi_dir = Path("fastapi")
+    
+    if not fastapi_dir.exists():
+        print("❌ Diretório 'fastapi' não encontrado")
+        print("💡 Clone o repositório:")
+        print("  git clone https://github.com/tiangolo/fastapi.git")
+        print("  cd fastapi && git checkout 45bfb89ea25fcbe8c44ac5d5657b147cfa074649")
+        return False
+    
+    # Verificar se é o commit correto
     try:
-        with open('data/issues_summary.txt', 'w', encoding='utf-8') as f:
-            f.write(issues_data)
-        print(f"  ✓ Sucesso - Coletando dados de issues (simulados)")
-        success_count += 1
-    except:
-        print(f"  ✗ Erro - Coletando dados de issues")
-    
-    print(f"\nMétricas coletadas: {success_count}/{total_count}")
-    return success_count == total_count
-
-def analyze_data():
-    """Executa análise dos dados coletados"""
-    print("\n=== ANÁLISE DOS DADOS ===")
-    
-    if run_command("python scripts/analyze_metrics.py", "Executando análise completa"):
-        print("  ✓ Análise concluída - relatório salvo em data/analysis_summary.json")
+        os.chdir("fastapi")
+        result = subprocess.run(['git', 'rev-parse', 'HEAD'], 
+                              capture_output=True, text=True)
+        current_commit = result.stdout.strip()
+        
+        expected_commit = "45bfb89ea25fcbe8c44ac5d5657b147cfa074649"
+        
+        if current_commit == expected_commit:
+            print(f"✅ FastAPI commit correto: {current_commit[:12]}")
+        else:
+            print(f"⚠️  Commit diferente: {current_commit[:12]}")
+            print(f"   Esperado: {expected_commit[:12]}")
+            print("💡 Execute: git checkout 45bfb89ea25fcbe8c44ac5d5657b147cfa074649")
+        
+        os.chdir("..")
         return True
-    else:
-        print("  ✗ Falha na análise")
+        
+    except Exception as e:
+        print(f"❌ Erro ao verificar commit: {e}")
+        os.chdir("..")
         return False
 
-def generate_readme():
-    """Gera README com instruções de reprodução"""
-    readme_content = """# Estudo GQM - FastAPI
-
-Este diretório contém todos os dados e scripts necessários para reproduzir o estudo Goal-Question-Metric (GQM) aplicado ao projeto FastAPI.
-
-## Estrutura do Projeto
-
-```
-fastapi/
-├── data/           # Dados coletados das métricas
-├── img/            # Gráficos e visualizações
-├── scripts/        # Scripts de análise
-└── docs/           # Documentação adicional
-```
-
-## Reprodução do Estudo
-
-### Pré-requisitos
-
-1. Python 3.8+
-2. Ambiente virtual configurado
-3. Dependências instaladas: `pip install -r requirements.txt`
-4. Ferramentas adicionais:
-   - Radon: `pip install radon`
-   - Pygount: `pip install pygount`
-
-### Passos para Reprodução
-
-1. **Configurar ambiente:**
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate  # Linux/macOS
-   # .venv\\Scripts\\Activate.ps1  # Windows PowerShell
-   pip install -r requirements.txt
-   pip install radon pygount pandas matplotlib
-   ```
-
-2. **Executar coleta completa:**
-   ```bash
-   python scripts/collect_all_metrics.py
-   ```
-
-3. **Analisar dados:**
-   ```bash
-   python scripts/analyze_metrics.py
-   ```
-
-## Objetivos do Estudo GQM
-
-### G1 - Melhorar a Manutenibilidade
-- **Q1.1**: Quais funções/módulos têm complexidade elevada?
-- **Q1.2**: Há duplicação entre utilitários/roteamento?
-- **Q1.3**: Onde estão os hotspots (churn × complexidade)?
-- **Q1.4**: Há smells/lints relevantes?
-
-### G2 - Aumentar a Confiabilidade
-- **Q2.1**: Qual a densidade de defeitos?
-- **Q2.2**: Tempo para corrigir bugs?
-- **Q2.3**: Qual a cobertura de testes?
-- **Q2.4**: O pipeline é estável?
-
-## Métricas Coletadas
-
-1. **Complexidade Ciclomática** (Radon): `data/cc.txt`
-2. **Índice de Manutenibilidade** (Radon): `data/mi.txt`
-3. **SLOC** (Pygount): `data/sloc.txt`
-4. **Churn Git**: `data/git_numstat.log`
-5. **Issues/Bugs**: `data/issues_summary.txt`
-
-## Resultados
-
-Os resultados processados estão disponíveis em:
-- `data/analysis_summary.json` - Resumo quantitativo
-- Console output do script de análise
-
-## Ferramentas Utilizadas
-
-- **Radon**: Complexidade ciclomática e índice de manutenibilidade
-- **Pygount**: Contagem de linhas de código
-- **Git**: Análise de churn histórico
-- **Python/Pandas**: Processamento e análise de dados
-- **Matplotlib**: Visualizações (quando aplicável)
-
-## Versão Analisada
-
-Consulte `data/version_info.txt` para detalhes da versão específica do FastAPI analisada.
-
-## Notas
-
-- Alguns dados (como issues detalhadas) foram simulados devido a limitações de acesso à GitHub API
-- O estudo foca nos módulos principais do FastAPI (`fastapi/` directory)
-- Testes executados com sucesso comprovam a funcionalidade do framework
-"""
-
-    with open('README.md', 'w', encoding='utf-8') as f:
-        f.write(readme_content)
+def collect_complexity_metrics():
+    """Coleta métricas de complexidade ciclomática"""
+    print("📊 Coletando complexidade ciclomática...")
     
-    print("  ✓ README.md gerado")
+    try:
+        # Complexidade ciclomática
+        with open("data/cc.txt", "w", encoding="utf-8") as f:
+            result = subprocess.run(
+                ['radon', 'cc', '-s', '-a', 'fastapi/'],
+                stdout=f, stderr=subprocess.PIPE, text=True
+            )
+        
+        if result.returncode == 0:
+            print("✅ Complexidade ciclomática coletada")
+        else:
+            print(f"⚠️  Aviso radon cc: {result.stderr}")
+            
+        time.sleep(1)
+        
+        # Índice de manutenibilidade
+        with open("data/mi.txt", "w", encoding="utf-8") as f:
+            result = subprocess.run(
+                ['radon', 'mi', '-s', 'fastapi/'],
+                stdout=f, stderr=subprocess.PIPE, text=True
+            )
+        
+        if result.returncode == 0:
+            print("✅ Índice de manutenibilidade coletado")
+        else:
+            print(f"⚠️  Aviso radon mi: {result.stderr}")
+            
+    except Exception as e:
+        print(f"❌ Erro ao coletar métricas de complexidade: {e}")
+
+def collect_sloc_metrics():
+    """Coleta métricas de linhas de código"""
+    print("📏 Coletando linhas de código...")
+    
+    try:
+        # SLOC em formato texto
+        with open("data/sloc.txt", "w", encoding="utf-8") as f:
+            result = subprocess.run(
+                ['pygount', '--format=summary', 'fastapi/'],
+                stdout=f, stderr=subprocess.PIPE, text=True
+            )
+        
+        if result.returncode == 0:
+            print("✅ SLOC (texto) coletado")
+        else:
+            print(f"⚠️  Aviso pygount summary: {result.stderr}")
+            
+        time.sleep(1)
+        
+        # SLOC em formato JSON
+        with open("data/sloc.json", "w", encoding="utf-8") as f:
+            result = subprocess.run(
+                ['pygount', '--format=json', 'fastapi/'],
+                stdout=f, stderr=subprocess.PIPE, text=True
+            )
+        
+        if result.returncode == 0:
+            print("✅ SLOC (JSON) coletado")
+        else:
+            print(f"⚠️  Aviso pygount json: {result.stderr}")
+            
+    except Exception as e:
+        print(f"❌ Erro ao coletar SLOC: {e}")
+
+def collect_git_metrics():
+    """Coleta métricas de churn do Git"""
+    print("📈 Coletando métricas de churn...")
+    
+    try:
+        os.chdir("fastapi")
+        
+        with open("../data/git_numstat.log", "w", encoding="utf-8") as f:
+            result = subprocess.run([
+                'git', 'log', '--since=12 months ago', '--numstat', 
+                '--date=iso', '--pretty=format:%H;%ad;%an;%s'
+            ], stdout=f, stderr=subprocess.PIPE, text=True)
+        
+        os.chdir("..")
+        
+        if result.returncode == 0:
+            print("✅ Churn do Git coletado")
+        else:
+            print(f"⚠️  Aviso git log: {result.stderr}")
+            
+    except Exception as e:
+        print(f"❌ Erro ao coletar churn: {e}")
+        os.chdir("..")
+
+def collect_version_info():
+    """Coleta informações de versão"""
+    print("📋 Coletando informações de versão...")
+    
+    try:
+        os.chdir("fastapi")
+        
+        # Hash do commit
+        result = subprocess.run(['git', 'rev-parse', 'HEAD'], 
+                              capture_output=True, text=True)
+        commit_hash = result.stdout.strip()
+        
+        # Descrição da versão
+        result = subprocess.run(['git', 'describe', '--tags', '--always'], 
+                              capture_output=True, text=True)
+        version_desc = result.stdout.strip()
+        
+        os.chdir("..")
+        
+        version_info = {
+            "commit_hash": commit_hash,
+            "version": version_desc,
+            "analysis_date": datetime.now().isoformat(),
+            "repository": "https://github.com/tiangolo/fastapi",
+            "branch": "master"
+        }
+        
+        with open("data/version_info.txt", "w", encoding="utf-8") as f:
+            f.write(f"FastAPI Version Analysis\n")
+            f.write(f"========================\n\n")
+            f.write(f"Repository: {version_info['repository']}\n")
+            f.write(f"Commit Hash: {version_info['commit_hash']}\n")
+            f.write(f"Version: {version_info['version']}\n")
+            f.write(f"Branch: {version_info['branch']}\n")
+            f.write(f"Analysis Date: {version_info['analysis_date']}\n")
+        
+        print("✅ Informações de versão coletadas")
+        
+    except Exception as e:
+        print(f"❌ Erro ao coletar versão: {e}")
+        if os.getcwd().endswith("fastapi"):
+            os.chdir("..")
+
+def run_analysis_scripts():
+    """Executa scripts de análise"""
+    print("🔬 Executando análises...")
+    
+    scripts = [
+        ("scripts/analyze_metrics.py", "Análise de métricas"),
+        ("scripts/analyze_hotspots.py", "Análise de hotspots")
+    ]
+    
+    for script_path, description in scripts:
+        if Path(script_path).exists():
+            try:
+                print(f"🔄 {description}...")
+                result = subprocess.run([sys.executable, script_path], 
+                                      capture_output=True, text=True)
+                
+                if result.returncode == 0:
+                    print(f"✅ {description} concluída")
+                else:
+                    print(f"⚠️  {description} com avisos: {result.stderr}")
+                    
+            except Exception as e:
+                print(f"❌ Erro em {description}: {e}")
+        else:
+            print(f"⚠️  Script {script_path} não encontrado")
+
+def generate_summary():
+    """Gera resumo da coleta"""
+    print("\n📊 Resumo da Coleta")
+    print("=" * 40)
+    
+    data_dir = Path("data")
+    files_info = []
+    
+    expected_files = [
+        "cc.txt", "mi.txt", "sloc.txt", "sloc.json", 
+        "git_numstat.log", "version_info.txt"
+    ]
+    
+    for filename in expected_files:
+        filepath = data_dir / filename
+        if filepath.exists():
+            size = filepath.stat().st_size
+            files_info.append((filename, size, "✅"))
+        else:
+            files_info.append((filename, 0, "❌"))
+    
+    print(f"{'Arquivo':<20} {'Tamanho':<10} {'Status'}")
+    print("-" * 40)
+    
+    for filename, size, status in files_info:
+        size_str = f"{size:,} bytes" if size > 0 else "N/A"
+        print(f"{filename:<20} {size_str:<10} {status}")
+    
+    # Contar arquivos de análise adicionais
+    analysis_files = list(data_dir.glob("*analysis*.json"))
+    if analysis_files:
+        print(f"\n📈 Arquivos de análise: {len(analysis_files)}")
+        for f in analysis_files:
+            print(f"  - {f.name}")
+    
+    docs_files = list(Path("docs").glob("*.md"))
+    if docs_files:
+        print(f"\n📋 Documentos gerados: {len(docs_files)}")
+        for f in docs_files:
+            print(f"  - {f.name}")
 
 def main():
     """Função principal"""
-    print("FastAPI GQM Study - Coleta Automatizada de Métricas")
-    print("=" * 60)
+    print_banner()
     
-    start_time = datetime.now()
-    
-    # 1. Configurar ambiente
-    if not setup_environment():
+    # Verificar pré-requisitos
+    if not check_prerequisites():
         sys.exit(1)
     
-    # 2. Coletar métricas
-    if not collect_metrics():
-        print("\n⚠️  Algumas métricas falharam, mas continuando...")
+    # Configurar estrutura
+    setup_directories()
     
-    # 3. Analisar dados
-    if not analyze_data():
-        print("\n❌ Análise falhou")
+    # Verificar FastAPI
+    if not check_fastapi_repo():
         sys.exit(1)
     
-    # 4. Gerar documentação
-    generate_readme()
+    print("🚀 Iniciando coleta de métricas...\n")
     
-    end_time = datetime.now()
-    duration = end_time - start_time
+    # Coletar métricas
+    collect_complexity_metrics()
+    collect_sloc_metrics()
+    collect_git_metrics()
+    collect_version_info()
     
-    print(f"\n✅ Estudo GQM concluído!")
-    print(f"⏱️  Tempo total: {duration}")
-    print(f"📁 Resultados disponíveis em:")
-    print(f"   - data/analysis_summary.json")
-    print(f"   - data/ (arquivos individuais)")
-    print(f"   - README.md (documentação)")
+    print()
+    
+    # Executar análises
+    run_analysis_scripts()
+    
+    # Gerar resumo
+    generate_summary()
+    
+    print(f"\n🎉 Coleta completa! Data: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print("📁 Verifique os resultados em:")
+    print("  - data/ (métricas brutas)")
+    print("  - docs/ (relatórios)")
+    print("\n💡 Próximos passos:")
+    print("  1. Revisar docs/Relatorio_GQM_Final.md")
+    print("  2. Verificar docs/Analise_Hotspots.md")
+    print("  3. Gerar PDF para entrega")
 
 if __name__ == "__main__":
     main()
