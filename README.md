@@ -1,11 +1,165 @@
-# FastAPI GQM Quality Analysis
+# FastAPI GQM Quality Analysis | Análise de Qualidade GQM do FastAPI
 
-> **Goal-Question-Metric (GQM) methodology applied to FastAPI framework for software quality assessment**
+> **Goal-Question-Metric (GQM) methodology applied to FastAPI framework for software quality assessment**  
+> **Metodologia Goal-Question-Metric (GQM) aplicada ao framework FastAPI para avaliação de qualidade de software**
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.118.0-009688.svg)](https://fastapi.tiangolo.com)
 [![GQM](https://img.shields.io/badge/Methodology-GQM-orange.svg)](https://en.wikipedia.org/wiki/GQM)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
+---
+
+## 🌐 Language / Idioma
+
+**[🇺🇸 English](#english-version)** | **[🇧🇷 Português](#versão-em-português)**
+
+---
+
+# 🇧🇷 Versão em Português
+
+## 📋 Visão Geral
+
+Este repositório contém uma análise abrangente de qualidade de software do **framework FastAPI** utilizando a metodologia **Goal-Question-Metric (GQM)**. O estudo avalia aspectos de manutenibilidade e confiabilidade de um dos frameworks web Python mais populares.
+
+### 🎓 Contexto Acadêmico
+
+**Curso**: Especialização em Gerência de Projetos de Software na Era de Dados de Sensores e IA  
+**Instituição**: Universidade Federal de Juiz de Fora (UFJF)  
+**Departamento**: Ciência da Computação  
+**Disciplina**: Métricas de Software (Código: 1322004)  
+**Professor**: Leonardo Vieira dos Santos Reis  
+**Período**: 2025/1º Semestre
+
+### 🎯 Objetivos do Estudo
+
+- **G1 - Melhorar Manutenibilidade**: Aprimorar a manutenibilidade do código em módulos críticos (roteamento, parâmetros, injeção de dependência)
+- **G2 - Aumentar Confiabilidade**: Melhorar a estabilidade e reduzir a ocorrência de defeitos através de testes e análise de bugs
+
+### 📊 Principais Descobertas
+
+- **Qualidade Geral**: Excelente índice de manutenibilidade de **81,56** (meta: ≥70)
+- **Hotspot Crítico**: `fastapi/dependencies/utils.py` requer refatoração imediata (IM: 5,29)
+- **Arquivos Grandes**: Dois arquivos excedem os limites recomendados (4.043 e 3.846 linhas)
+- **Confiabilidade**: Testes aprovados, densidade de bugs controlada (~0,5-1,0 bugs/KLOC)
+
+## 🚀 Início Rápido
+
+### Configuração Automatizada (Recomendado)
+```bash
+# Linux/macOS
+chmod +x setup.sh
+./setup.sh
+
+# Windows
+setup.bat
+```
+
+### Configuração Manual
+
+1. **Clone o repositório**
+   ```bash
+   git clone https://github.com/BUGG1N/quality-gqm-fastapi.git
+   cd quality-gqm-fastapi
+   ```
+
+2. **Configure o ambiente**
+   ```bash
+   # Criar ambiente virtual
+   python -m venv .venv
+   source .venv/bin/activate      # Linux/macOS
+   # .venv\Scripts\Activate.ps1   # Windows PowerShell
+   
+   # Instalar dependências
+   pip install -r requirements.txt
+   ```
+
+3. **Clone o FastAPI para análise**
+   ```bash
+   git clone https://github.com/tiangolo/fastapi.git
+   cd fastapi
+   git checkout 45bfb89ea25fcbe8c44ac5d5657b147cfa074649
+   cd ..
+   ```
+
+4. **Execute a análise**
+   ```bash
+   python scripts/collect_all_metrics.py
+   python scripts/analyze_metrics.py
+   ```
+
+## 📈 Metodologia
+
+Este estudo segue a abordagem **Goal-Question-Metric (GQM)** proposta por Basili e Weiss:
+
+1. **Objetivos** - Definir metas conceituais para medição
+2. **Questões** - Refinar objetivos em questões operacionais  
+3. **Métricas** - Associar métricas quantitativas para responder questões
+
+### Estrutura GQM Aplicada
+
+#### 🎯 Objetivos
+- **G1**: Melhorar manutenibilidade em módulos críticos
+- **G2**: Aumentar confiabilidade (bugs, testes, pipeline)
+
+#### ❓ Questões (8 no total)
+- 4 questões para avaliação de manutenibilidade
+- 4 questões para avaliação de confiabilidade
+
+#### 📊 Métricas
+- Complexidade Ciclomática (Radon)
+- Índice de Manutenibilidade (Radon)  
+- Linhas de Código Fonte (Pygount)
+- Análise de Churn do Git
+- Densidade de Bugs & MTTR
+- Cobertura e Status de Testes
+
+## 📋 Resumo dos Resultados
+
+### ✅ Pontos Fortes
+- **Alta qualidade geral** com IM de 81,56
+- **89% dos arquivos** atendem aos padrões de manutenibilidade
+- **Suíte de testes funcional** com todos os testes aprovados
+- **Densidade de bugs controlada** dentro dos padrões da indústria
+
+### ⚠️ Áreas para Melhoria
+- **Arquivo crítico**: `dependencies/utils.py` (IM: 5,29) precisa de refatoração imediata
+- **Arquivos grandes**: `applications.py` (4.043 linhas) e `routing.py` (3.846 linhas)
+- **Dívida técnica** concentrada em módulos centrais
+
+### 🎯 Recomendações Prioritárias
+1. **ALTA**: Refatorar `fastapi/dependencies/utils.py`
+2. **ALTA**: Dividir `fastapi/applications.py` em módulos menores
+3. **ALTA**: Refatorar arquitetura do `fastapi/routing.py`
+4. **MÉDIA**: Implementar monitoramento contínuo de qualidade
+
+## 📚 Documentação
+
+- **[Relatório Completo](docs/Relatorio_GQM_FastAPI.md)** - Análise GQM completa com 7 seções
+- **[Resumo Executivo](docs/Sumario_Executivo.md)** - Principais descobertas e recomendações
+- **[Lista de Verificação](docs/Checklist_Entrega.md)** - Validação e verificação de completude
+
+## 🤝 Contribuições
+
+Este é um repositório de estudo acadêmico. No entanto, se você encontrar problemas ou quiser aprimorar a análise:
+
+1. Faça um fork do repositório
+2. Crie uma branch de feature
+3. Envie um pull request
+
+## 📞 Contato
+
+Para questões sobre esta análise ou a metodologia GQM aplicada:
+
+- **Foco do Estudo**: Avaliação de Qualidade de Software usando GQM
+- **Framework Analisado**: FastAPI (framework web Python)
+- **Metodologia**: Abordagem Goal-Question-Metric
+- **Contexto Acadêmico**: Curso de Métricas de Software UFJF (1322004)
+- **Instituição**: Universidade Federal de Juiz de Fora - Depto. Ciência da Computação
+
+---
+
+# 🇺🇸 English Version
 
 ## 📋 Overview
 
@@ -223,3 +377,17 @@ For questions about this analysis or the GQM methodology applied:
 ---
 
 **Note**: This is an independent quality analysis study. It is not affiliated with or endorsed by the FastAPI project maintainers.
+
+---
+
+## 🙏 Agradecimentos
+
+- **Equipe FastAPI** - Por criar um excelente framework para analisar
+- **Basili & Weiss** - Pela metodologia GQM
+- **Prof. Leonardo Vieira dos Santos Reis** - Orientação acadêmica e supervisão metodológica
+- **Departamento de Ciência da Computação UFJF** - Suporte educacional e recursos
+- **Comunidade Open Source** - Pelas ferramentas que tornaram esta análise possível
+
+---
+
+**Nota**: Este é um estudo independente de análise de qualidade. Não é afiliado ou endossado pelos mantenedores do projeto FastAPI.
